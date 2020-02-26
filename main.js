@@ -58,8 +58,16 @@ function reduce(array, f, acc) {
 //solve it using the most appropriate helper functions(reduce,each,map,filter).
 //wordLengths("hello its me") // [5,3,2]
 
+
+// return array with same length ==> map
+// we need to create the array from the string first
 function wordLengths(str) {
     // TODO: your code here 
+    str = str.split(" ");
+    return map(str, function(value){
+      console.log(value);
+      return value.length;
+    });
 }
 
 //=============================================================================
@@ -71,8 +79,14 @@ function wordLengths(str) {
 // countOccurrences("hello", "l"); // 2
 // countOccurrences("hello, world!", "l"); // 3
 
+// we need to use reduce function, we return only one resutl
+// string and array have same way of looping for index same for object
 function countOccurrences(string, character) {
     // your code is here
+    var acc = 0;
+    return reduce(string, function(acc, value){
+      return acc + (value === character ? 1:0);
+    }, acc);
 }
 
 //=============================================================================
@@ -83,8 +97,14 @@ function countOccurrences(string, character) {
 //solve it using the most appropriate helper functions(reduce,each,map,filter).
 // wordsLongerThanThree("Hello Mad World") //["Hello", "World"]
 
+// we return array with some condition on it, we use filter
+// we create our array first
 function wordsLongerThanThree(str) {
     // TODO: your code here 
+    str = str.split(" ");
+    return filter(str, function(value){
+      return value.length > 3;
+    });
 }
 
 //=============================================================================
@@ -100,6 +120,10 @@ function wordsLongerThanThree(str) {
 
 function repeatString(str, count) { 
  // TODO: your code here 
+  if(count === 0){
+    return "";
+  }
+  return str + repeatString(str, count - 1);
 } 
  
 
@@ -130,21 +154,56 @@ function repeatString(str, count) {
 
 // Write your code here .....
 
+function makePizza(crust, size, numberOfSlice){
+  var crust = crust;
+  var size = size;
+  var numberOfSlice = numberOfSlice;
+  var ingredients = [];
+  console.log(this.crust);
+  return{
+    // this will return to this object not the pizza we are making, but the object that we are returning
+    addIngredients : function(str){
+      ingredients.push(str);
+      return ingredients;
+    },
+    displayIngredients : function(){
+      if(ingredients.length === 0) return "You have no ingredient";
+      return "Your ingredients are " + ingredients.join(", ");
+    },
+    // the settime out function return a function after some time, here we will return after 2 seconds (2000)
+    bakePizza : function(){
+      // the function will be executed after couple of seconds, probably it need the arguments to be outputed later, I'm not sure how it's working (mystery xD)
+      setTimeout(function(crust, size, numberOfSlice){
+        console.log("Your " + crust + " " + size + " " + numberOfSlice) + " pizza is done";
+      }, 2000);
+    },
+    eatSlice : function(){
+      if(numberOfSlice > 0){
+        numberOfSlice -= 1;
+        return "You just ate a slice , you still have " + numberOfSlice + " slices";
+      }
+      return "Man chill, you just ate everything xD";
+    }
+  }
+}
+
 //=============================================================================
 /*                                  Q6                                      */
 //=============================================================================
 /*
 Create a ReadingList class by using OOP concept, where:
 Your class should has:
-"read" for the number of books that finish reading
-"unRead" for the number of books that still not read
-"toRead" array for the books names that want to read in the future
-"currentRead" for the name of the book that is reading currently
-"readBooks" Array of the names of books that finish read
+"read" for the number of books that finish reading (number)
+"unRead" for the number of books that still not read (array of books not read)
+"toRead" array for the books names that want to read in the future (array of books that we want to read)
+"currentRead" for the name of the book that is reading currently (string of one book that we are reading)
+"readBooks" Array of the names of books that finish read (after we read a book we add it the array of the we read)
+
 "AddBook" function that:
-a- Accept the book name as parameter
-b- Add the new book to "toRead" array
+a- Accept the book name as parameter (it just take a book as param??)
+b- Add the new book to "toRead" array (.push())
 c- Increment the number of the unread books.
+
 "finishCurrentBook" function that:
 a- Add the "currentRead" to the "readBooks" array
 b- Increment the "read" books
@@ -152,9 +211,37 @@ c- Change the "currentRead" to be the first book from "toRead" array
 d- Decrement the number of "unread" books
 */
 
-// Now, to make sure that you are actually reading, make a comment below this and type: Yes I am
 
+// Now, to make sure that you are actually reading, make a comment below this and type: Yes I am
+// Yez I am
 // Write your code here .....
+
+function ReadingList(){
+  var read = 0, unRead = 0, toRead = [], currentBook, readBooks = [];
+  return{
+    read : read,
+    unRead : unRead,
+    toRead : toRead,
+    currentBook : currentBook,
+    readBooks : readBooks,
+    addBook : addBook,
+    finishCurrentBook : finishCurrentBook
+  }
+}
+
+function addBook(book){
+  this.toRead.push(book);
+  this.unRead++;
+}
+
+function finishCurrentBook(){
+  this.readBooks.push(currentBook);
+  this.read++;
+  if(this.toRead.length > 0){
+    this.currentBook = this.toRead[0];
+  }
+  this.unRead--;
+}
 
 //=============================================================================
 /*                                  Q7                                       */
@@ -176,6 +263,36 @@ d- Decrement the number of "unread" books
 
 // Write your code here .....
 
+function makeSafe(storageSizeLimit){
+  var itemsArr = [];
+  var storageSizeLimit = storageSizeLimit;
+  function addItem(item, itemSize){
+    if(itemSize === "big"){
+      if(storageSizeLimit < 3){
+        return "cant fit in";
+      } else{
+        itemsArr.push(item);
+        return itemsArr.join(" ");
+      }
+    } else if(itemSize === "medium"){
+      if(storageSizeLimit < 2){
+        return "cant fit in";
+      } else{
+        itemsArr.push(item);
+        return itemsArr.join(" ");
+      }
+    } else{
+      if(storageSizeLimit < 1){
+        return "cant fit in";
+      } else{
+        itemsArr.push(item);
+        return itemsArr.join(" ");
+      }
+    }
+  }
+  return addItem;
+}
+
 //=============================================================================
 /*                                  Q8                                       */
 //=============================================================================
@@ -190,6 +307,7 @@ d- Decrement the number of "unread" books
 //Do not add a list item if the color value is non of the colors
 
 //DO NOT USE JQUERY
+
 
 //================================================================================
 /*                              Q9                                            */
@@ -216,12 +334,16 @@ d- Decrement the number of "unread" books
 //================================================================================
 // Theoretical questions.
 // 1- In your own words,Why do we use Closures ?
+// We use closures to initate variables and make them unaccessible
 
 // 2- In OOP, what does "this" refer to ?
+// this always returns to the current object, mostly on out left side 
 
 // 3- What is jQuery?
+// Jquery is a library of javascript we use, for less complicated and long code
 
 // 4- what is the diffrence between Closure's methods and The OOP's methods?
+// OOP methodes takes less memory, it dosent inherit the function every time we make instance of object, it just make reference to the function that it's defined outside to the object
 
 
 
